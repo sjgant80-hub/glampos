@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>GLAMPOS · one hub for your whole site — bookings, guard, guest comms, visibility</title>
+<meta name="description" content="The sovereign site-automation pack for glamping & small stays. One mobile hub: every booking channel in one view with double-bookings caught before the guest is confirmed, guest replies drafted from your real facts, a turnover schedule, a free Roost listing, and an AI-visibility pack. Runs from your phone, nothing sent without your say-so." />
+<link rel="manifest" href="./manifest.webmanifest" />
+<meta name="theme-color" content="#14201c" />
+<style>
+  :root{
+    --bg:#f4f6f4; --panel:#ffffff; --panel2:#f0f4f1; --ink:#17231e; --dim:#5c6b64; --faint:#8a978f; --line:#e0e7e2;
+    --moss:#2f6b52; --leaf:#4e9a76; --ember:#c97a3d; --gold:#c19a3e; --bad:#c0453f; --good:#2f9e6b; --warn:#d89a2a;
+    --direct:#4e9a76; --airbnb:#e0576b; --bdc:#3a6bb0; --roost:#c97a3d;
+    --serif:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+    --sans:-apple-system,system-ui,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    --shadow:0 1px 2px rgba(20,40,30,.05),0 12px 40px rgba(20,50,35,.07);
+  }
+  @media(prefers-color-scheme:dark){:root{
+    --bg:#0f1613; --panel:#16211d; --panel2:#1c2a24; --ink:#e7eee9; --dim:#93a49b; --faint:#657268; --line:#25332c;
+    --moss:#4e9a76; --leaf:#66b58e; --ember:#e0975a; --gold:#e0bd5e; --bad:#e86a63; --good:#4fd69a; --warn:#e8b84a;
+    --direct:#66b58e; --airbnb:#f07a8c; --bdc:#6a9de0; --roost:#e0975a;
+    --shadow:0 1px 0 rgba(255,255,255,.02),0 24px 60px rgba(0,0,0,.5);
+  }}
+  :root[data-theme="light"]{--bg:#f4f6f4;--panel:#fff;--panel2:#f0f4f1;--ink:#17231e;--dim:#5c6b64;--faint:#8a978f;--line:#e0e7e2;--moss:#2f6b52;--leaf:#4e9a76;--ember:#c97a3d;--gold:#c19a3e;--bad:#c0453f;--good:#2f9e6b;--warn:#d89a2a;--direct:#4e9a76;--airbnb:#e0576b;--bdc:#3a6bb0;--roost:#c97a3d;--shadow:0 1px 2px rgba(20,40,30,.05),0 12px 40px rgba(20,50,35,.07)}
+  :root[data-theme="dark"]{--bg:#0f1613;--panel:#16211d;--panel2:#1c2a24;--ink:#e7eee9;--dim:#93a49b;--faint:#657268;--line:#25332c;--moss:#4e9a76;--leaf:#66b58e;--ember:#e0975a;--gold:#e0bd5e;--bad:#e86a63;--good:#4fd69a;--warn:#e8b84a;--direct:#66b58e;--airbnb:#f07a8c;--bdc:#6a9de0;--roost:#e0975a;--shadow:0 1px 0 rgba(255,255,255,.02),0 24px 60px rgba(0,0,0,.5)}
+
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:max(14px,env(safe-area-inset-top)) 14px 50px}
+  .wrap{max-width:680px;margin:0 auto}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  header{margin:6px 0 4px}
+  .brand{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--leaf)}
+  h1{font-family:var(--serif);font-size:clamp(24px,6vw,34px);margin:2px 0 0;font-weight:600}
+  .val{color:var(--dim);font-size:14px;margin-top:6px;font-family:var(--serif);font-style:italic;max-width:56ch}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px 17px;margin-top:14px}
+  .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:8px}
+  .eyebrow .hrs{margin-left:auto;color:var(--leaf);font-size:10px}
+  h2{font-family:var(--serif);font-size:19px;margin:4px 0 2px;font-weight:600}
+  .sub{color:var(--dim);font-size:13px;margin:0 0 8px}
+  button{font-family:var(--sans);cursor:pointer;transition:.14s;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:13px;font-weight:550;padding:8px 13px}
+  button:hover{border-color:var(--leaf)} button.pri{background:var(--moss);border-color:transparent;color:#fff}
+  button.sm{font-size:12px;padding:6px 10px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;vertical-align:middle;margin-right:5px}
+  .chan-direct{color:var(--direct)} .chan-airbnb{color:var(--airbnb)} .chan-bdc{color:var(--bdc)} .chan-roost{color:var(--roost)}
+
+  /* guard */
+  .guard{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 8%,var(--panel))}
+  .guard.clear{border-color:color-mix(in srgb,var(--good) 40%,var(--line));background:color-mix(in srgb,var(--good) 7%,var(--panel))}
+  .clash{border:1px solid color-mix(in srgb,var(--bad) 40%,var(--line));border-radius:11px;padding:12px 13px;margin-top:10px;background:var(--panel)}
+  .clash .ct{font-weight:650;font-size:14.5px} .clash .cd{font-size:13px;color:var(--dim);margin:3px 0 9px}
+  .clash .btns{display:flex;gap:8px;flex-wrap:wrap}
+  .allclear{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-size:16px;color:var(--good);padding:6px 0}
+
+  /* bookings */
+  .bk{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .bk:last-child{border-bottom:0} .bk .u{font-weight:600;flex:1} .bk .d{font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .bk.clashed{color:var(--bad)}
+  .tag{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:6px;border:1px solid var(--line);white-space:nowrap}
+
+  /* replies */
+  .enq{border-top:1px solid var(--line);padding:11px 0}
+  .enq:first-of-type{border-top:0}
+  .enq .q{font-size:14px} .enq .q b{color:var(--dim);font-weight:500;font-size:12px}
+  .draft{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:7px;font-size:14px;font-family:var(--serif)}
+  .draft .flag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;margin-top:6px}
+  .flag.safe{color:var(--good)} .flag.wait{color:var(--warn)} .flag.check{color:var(--dim)}
+  .enq .acts{display:flex;gap:7px;margin-top:8px}
+
+  /* turnover */
+  .turn{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .turn:last-child{border-bottom:0} .turn .u{font-weight:600} .turn .due{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--dim)}
+  details summary{cursor:pointer;color:var(--dim);font-size:12.5px;padding:4px 0}
+  .checks{display:grid;gap:5px;margin-top:6px} .checks label{font-size:13px;color:var(--dim);display:flex;gap:8px;align-items:center}
+
+  /* roost */
+  .roostcard{border-color:color-mix(in srgb,var(--roost) 35%,var(--line))}
+  .facts{display:grid;gap:6px;margin-top:8px;font-size:13px} .facts b{color:var(--ink)}
+  pre{font-family:var(--mono);font-size:11px;line-height:1.5;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:10px;overflow-x:auto;max-height:200px;margin:9px 0 0}
+  .pill{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:999px;border:1px solid var(--roost);color:var(--roost)}
+
+  .kv{display:grid;grid-template-columns:120px 1fr;gap:7px 10px;align-items:center;margin-top:8px}
+  .kv label{font-size:12.5px;color:var(--dim)}
+  .kv input{width:100%;font-size:14px;padding:7px 9px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--ink)}
+  .kv .chk{display:flex;align-items:center;gap:7px}
+  footer{margin-top:22px;color:var(--faint);font-size:12px;text-align:center;line-height:1.7}
+  footer b{color:var(--dim)} a{color:var(--leaf)}
+  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .theme{font-size:14px;padding:7px 11px}
+</style>
+</head>
+<body>
+<h2 class="sr-only">GLAMPOS is a demo of a sovereign site-automation hub for a small stays business. It shows every booking channel in one view with double-bookings caught before a guest is confirmed, guest replies drafted only from the site's real facts, a turnover cleaning schedule, a free Roost co-op listing generated from the same facts, and an AI-visibility pack. It is generic and per-site fillable; edit the site details and everything updates.</h2>
+<div class="wrap">
+  <header>
+    <div class="top">
+      <div><div class="brand">◊ GLAMPOS</div><h1 id="siteName">Your Glampsite</h1></div>
+      <button class="theme" id="theme" aria-label="toggle theme">◐</button>
+    </div>
+    <div class="val">Every booking channel in one view · double-bookings caught before the guest is confirmed · replies drafted from your real facts · listed free on Roost · made visible to AI. Runs from your phone. Nothing sent without your say-so.</div>
+  </header>
+
+  <!-- 1 · THE GUARD (hero) -->
+  <section class="card guard" id="guardCard">
+    <div class="eyebrow">⚠ Double-booking guard <span class="hrs">the disaster-preventer</span></div>
+    <div id="guardBody"></div>
+  </section>
+
+  <!-- 2 · UNIFIED BOOKINGS -->
+  <section class="card">
+    <div class="eyebrow">Every channel, one view <span class="hrs">~2–3 hrs/wk</span></div>
+    <h2>Bookings</h2>
+    <p class="sub">Direct, Booking.com, Airbnb & Roost overlaid — pulled by free iCal (lag ~minutes, enough to catch clashes before you confirm).</p>
+    <div id="bookings"></div>
+  </section>
+
+  <!-- 3 · GUEST REPLIES -->
+  <section class="card">
+    <div class="eyebrow">Replies drafted for you <span class="hrs">~3–5 hrs/wk</span></div>
+    <h2>Guest messages</h2>
+    <p class="sub">Drafted from your real facts only — never invented. You tap Send, or it flags what to check.</p>
+    <div id="replies"></div>
+  </section>
+
+  <!-- 4 · TURNOVER -->
+  <section class="card">
+    <div class="eyebrow">Cleaning &amp; turnover</div>
+    <h2>Turnover schedule</h2>
+    <p class="sub">Every checkout auto-creates a turnover, soonest first, with the cleaning checklist.</p>
+    <div id="turnover"></div>
+  </section>
+
+  <!-- 5 · ROOST -->
+  <section class="card roostcard">
+    <div class="eyebrow">Free listing · Roost <span class="pill">co-op · £0 fees</span></div>
+    <h2>You're also listed free on Roost</h2>
+    <p class="sub" id="roostPitch"></p>
+    <div class="facts" id="roostFacts"></div>
+    <div style="margin-top:11px;display:flex;gap:8px;flex-wrap:wrap"><button class="sm" id="viewFeed">view the listing feed</button><a class="sm" id="roostApply" target="_blank" rel="noopener" style="text-decoration:none"><button class="sm">apply to Roost ↗</button></a></div>
+    <pre id="feed" style="display:none"></pre>
+  </section>
+
+  <!-- 6 · GEO / AI -->
+  <section class="card">
+    <div class="eyebrow">AI visibility <span class="hrs">compounding · direct bookings</span></div>
+    <h2>Be found by AI, not just Google</h2>
+    <p class="sub">Guests increasingly ask an assistant "dog-friendly glamping near…". This makes your site citable — driving direct, commission-free bookings. A drop-in for your web dev, built from your facts.</p>
+    <button class="sm pri" id="geoBtn">⬇ generate the drop-in pack</button>
+  </section>
+
+  <!-- 7 · SOCIAL -->
+  <section class="card">
+    <div class="eyebrow">Social <span class="hrs">~2 hrs/wk</span></div>
+    <h2>Posts from your real availability</h2>
+    <p class="sub">Drafted from what's actually free — never advertise a booked weekend. Approve a week in one sitting.</p>
+    <div id="social"></div>
+  </section>
+
+  <!-- 8 · SITE DETAILS (the ONE-KERNEL, editable = generic) -->
+  <section class="card">
+    <div class="eyebrow">Your site details · the one source of truth</div>
+    <h2>Everything reads from here</h2>
+    <p class="sub">Edit these and the whole hub updates — the listing, the replies, the AI pack. A fact lives in one place. This is what makes it a template: fill it for any site.</p>
+    <div class="kv" id="kv"></div>
+    <div style="margin-top:10px"><button class="sm" id="resetDemo">reset the demo</button></div>
+  </section>
+
+  <footer>
+    <b>Sovereign · hybrid · grounded · honest.</b> Runs on your own accounts, nothing sent without your tap, drafts only from your real facts, real empty states (iCal lag noted).<br>
+    The generic form of the proven <a href="https://sjgant80-hub.github.io/wishwood/">Wishwood</a> deploy. Roost is the co-op, zero-fee <a href="https://sjgant80-hub.github.io/roost/">Airbnb alternative</a> on the open stays-protocol.
+  </footer>
+</div>
+
+<script type="module">
+import G from './glampos.mjs?v=1';
+const $ = s => document.querySelector(s);
+const KEY = 'glampos-v1';
+let state = load();
+function seed(){
+  const kernel = G.sampleKernel();
+  kernel.site.name='Fox & Fern Glamping'; kernel.site.location='near Rye, East Sussex'; kernel.site.domain='https://foxandfern.example';
+  kernel.site.dogs=true; kernel.site.parking='free, by your unit'; kernel.site.checkIn='3pm'; kernel.site.wifi=false;
+  kernel.site.directions='follow Fern Lane past the oak; gate code texted the morning you arrive';
+  kernel.faqs=[{q:'Are dogs allowed?',a:'Yes — two well-behaved dogs per unit.'},{q:'What time is check-in?',a:'From 3pm.'}];
+  const bk=[
+    {id:'ab1',unit:'lodge',channel:'airbnb',from:'2026-08-10',to:'2026-08-13',guest:'Priya S.',status:'confirmed'},
+    {id:'bd1',unit:'lodge',channel:'bdc',from:'2026-08-12',to:'2026-08-15',guest:'M. Klein',status:'confirmed'}, // ← the clash
+    {id:'dir1',unit:'yurt',channel:'direct',from:'2026-08-10',to:'2026-08-12',guest:'the Osei family',status:'confirmed'},
+    {id:'ro1',unit:'yurt',channel:'roost',from:'2026-08-16',to:'2026-08-19',guest:'J. Bell',status:'confirmed'},
+    {id:'dir2',unit:'lodge',channel:'direct',from:'2026-08-20',to:'2026-08-23',guest:'the Wus',status:'confirmed'},
+  ];
+  const enq=[
+    {id:'e1',msg:'Hi! Do you allow dogs? We have a spaniel.'},
+    {id:'e2',msg:'What time can we check in on Friday?'},
+    {id:'e3',msg:'How much is the Lodge per night?'},
+    {id:'e4',msg:'Roughly how do we find you from the village?'},
+  ];
+  return { kernel, bk, enq, sent:{} };
+}
+function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s&&s.kernel) return s; }catch(e){} return seed(); }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const chanName = c => (G.CHANNELS[c]||{name:c}).name;
+const day = d => d.slice(8)+' '+['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+d.slice(5,7)-1];
+const unitName = id => (state.kernel.units.find(u=>u.id===id)||{name:id}).name;
+
+function render(){
+  $('#siteName').textContent = state.kernel.site.name;
+  // GUARD
+  const cl = G.clashes(state.bk);
+  const gc=$('#guardCard'), gb=$('#guardBody');
+  if(cl.length){ gc.classList.remove('clear');
+    gb.innerHTML = cl.map(c=>`<div class="clash"><div class="ct">⚠ ${esc(unitName(c.unit))} is double-booked</div>
+      <div class="cd">Sold on <b class="chan-${c.a.channel}">${chanName(c.a.channel)}</b> (${esc(c.a.guest)}) AND <b class="chan-${c.b.channel}">${chanName(c.b.channel)}</b> (${esc(c.b.guest)}) — both cover <b>${day(c.from)}–${day(c.to)}</b>. Neither guest is confirmed yet. Sort it now.</div>
+      <div class="btns"><button class="sm pri" data-cancel="${c.b.id}">Keep ${chanName(c.a.channel)} · release ${chanName(c.b.channel)}</button><button class="sm" data-cancel="${c.a.id}">Keep ${chanName(c.b.channel)} · release ${chanName(c.a.channel)}</button></div></div>`).join('');
+  } else { gc.classList.add('clear'); gb.innerHTML = `<div class="allclear">✓ All clear — no unit is sold twice.</div>`; }
+
+  // BOOKINGS
+  const clashedIds = new Set(cl.flatMap(c=>[c.a.id,c.b.id]));
+  const active = state.bk.filter(b=>b.status!=='cancelled').sort((a,b)=>a.from<b.from?-1:1);
+  $('#bookings').innerHTML = active.map(b=>`<div class="bk ${clashedIds.has(b.id)?'clashed':''}">
+    <span class="dot" style="background:var(--${b.channel})"></span>
+    <span class="u">${esc(unitName(b.unit))}${clashedIds.has(b.id)?' ⚠':''}</span>
+    <span class="d">${day(b.from)}–${day(b.to)}</span>
+    <span class="tag chan-${b.channel}">${chanName(b.channel)}</span></div>`).join('') || '<div class="sub">No bookings yet.</div>';
+
+  // REPLIES
+  $('#replies').innerHTML = state.enq.map(e=>{ const d=G.draftReply(state.kernel, e.msg); const sent=state.sent[e.id];
+    const flag = d.autoSafe?'safe':d.grounded?'wait':'check';
+    return `<div class="enq"><div class="q"><b>enquiry:</b> ${esc(e.msg)}</div>
+      <div class="draft">${esc(d.text)}<span class="flag ${flag}">${d.autoSafe?'✓ safe fact — can auto-send':d.grounded?'grounded · waiting for your tap':'⚑ not in your details — flagged, not guessed'}</span></div>
+      <div class="acts">${sent?'<span class="flag safe" style="font-size:12px">✓ sent</span>':`<button class="sm pri" data-send="${e.id}">Send</button><button class="sm" data-send="${e.id}">Edit</button>`}</div></div>`;
+  }).join('');
+
+  // TURNOVER
+  const ts=G.turnoverSchedule(state.bk);
+  $('#turnover').innerHTML = ts.map(t=>`<div><div class="turn"><span class="dot" style="background:var(--${t.from})"></span><span class="u">${esc(unitName(t.unit))} turnover</span><span class="due">out ${day(t.due)}</span></div>
+    <details><summary>cleaning checklist (${t.tasks.length})</summary><div class="checks">${t.tasks.map(x=>`<label><input type="checkbox"> ${esc(x)}</label>`).join('')}</div></details></div>`).join('') || '<div class="sub">No turnovers due.</div>';
+
+  // ROOST
+  const R=G.ROOST;
+  $('#roostPitch').innerHTML = `A cooperative, host-owned marketplace — <b>${esc(R.feesNote)}</b> Built free from the details below, so there's nothing extra to do.`;
+  $('#roostFacts').innerHTML = `<div>• <b>Zero booking fees</b> — you keep ~£136 more per £1,000 vs Airbnb.</div><div>• ${esc(R.membership)}.</div><div>• Sends guests <b>direct to your booking page</b> — no commission, no data harvested.</div><div>• Listed via the open stays-protocol, generated from your details (below).</div>`;
+  $('#roostApply').href = R.apply;
+  $('#feed').textContent = JSON.stringify(G.staysProtocol(state.kernel), null, 2);
+
+  // SOCIAL
+  const free = firstFreeWindow();
+  const post = free? G.draftPost(state.kernel, state.bk, free.from, free.to) : null;
+  $('#social').innerHTML = post? `<div class="draft">${esc(post.text)}<span class="flag safe">✓ ${esc(unitName(post.unit))} really is free ${day(post.from)}–${day(post.to)}</span></div><div class="acts"><button class="sm pri">Approve for the queue</button></div>` : '<div class="sub">Nothing free in the next window to post about (honest — we won\'t advertise a booked date).</div>';
+
+  // SITE DETAILS (editable kernel)
+  const s=state.kernel.site, u0=state.kernel.units[0];
+  $('#kv').innerHTML = `
+    <label>Site name</label><input data-k="site.name" value="${esc(s.name)}">
+    <label>Location</label><input data-k="site.location" value="${esc(s.location)}">
+    <label>Check-in</label><input data-k="site.checkIn" value="${esc(s.checkIn)}">
+    <label>${esc(u0.name)} £/night</label><input data-k="unit0.priceFrom" type="number" value="${u0.priceFrom}">
+    <label>Dogs allowed?</label><div class="chk"><input type="checkbox" data-k="site.dogs" ${s.dogs?'checked':''}> <span style="font-size:13px;color:var(--dim)">changes replies + listing</span></div>`;
+  save();
+}
+function firstFreeWindow(){ // find a 2-night window in the next 30 days where a unit is free
+  const base=new Date('2026-08-24'); for(let i=0;i<28;i++){ const d=new Date(base); d.setDate(d.getDate()+i); const from=d.toISOString().slice(0,10); const e=new Date(d); e.setDate(e.getDate()+2); const to=e.toISOString().slice(0,10);
+    if(state.kernel.units.some(u=>G.isFree(state.bk,u.id,from,to))) return {from,to}; } return null; }
+
+document.body.addEventListener('click',e=>{
+  const c=e.target.closest('[data-cancel]'); if(c){ const b=state.bk.find(x=>x.id===c.dataset.cancel); if(b){ b.status='cancelled'; render(); } return; }
+  const s=e.target.closest('[data-send]'); if(s){ state.sent[s.dataset.send]=true; render(); return; }
+});
+$('#kv').addEventListener('input',e=>{ const inp=e.target.closest('[data-k]'); if(!inp) return; const k=inp.dataset.k;
+  if(k==='site.dogs'){ state.kernel.site.dogs=inp.checked; }
+  else if(k==='unit0.priceFrom'){ state.kernel.units[0].priceFrom=+inp.value||0; }
+  else { const [,f]=k.split('.'); state.kernel.site[f]=inp.value; }
+  render(); });
+$('#viewFeed').onclick=()=>{ const f=$('#feed'); f.style.display = f.style.display==='none'?'block':'none'; };
+$('#geoBtn').onclick=()=>{ const g=G.geoPack(state.kernel);
+  const out=`<!-- GLAMPOS · AI-visibility drop-in for ${esc(state.kernel.site.name)} · paste into your site <head> -->\n${g.scriptTags}\n\n<!-- and save this as robots.txt at your site root: -->\n${g.robots}`;
+  const blob=new Blob([out],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='geo-ai-pack.txt'; a.click(); };
+$('#resetDemo').onclick=()=>{ if(confirm('Reset the demo site?')){ state=seed(); save(); render(); } };
+$('#theme').onclick=()=>{ const r=document.documentElement, cur=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'); r.setAttribute('data-theme',cur==='dark'?'light':'dark'); };
+
+render();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body>
+</html>

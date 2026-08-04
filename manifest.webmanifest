@@ -1,0 +1,7 @@
+{
+  "name": "GLAMPOS — the sovereign site-automation pack",
+  "short_name": "GLAMPOS",
+  "description": "One mobile hub for a small stays business: every booking channel in one view with double-bookings caught before the guest is confirmed, guest replies drafted from your real facts, a turnover schedule, a free Roost co-op listing, and an AI-visibility pack. Sovereign, hybrid, grounded.",
+  "start_url": "./", "scope": "./", "display": "standalone", "background_color": "#14201c", "theme_color": "#14201c",
+  "icons": [{ "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2314201c'/%3E%3Cpath d='M50 20 L74 44 L64 44 L64 74 L36 74 L36 44 L26 44 Z' fill='none' stroke='%234e9a76' stroke-width='4' stroke-linejoin='round'/%3E%3Ccircle cx='50' cy='58' r='5' fill='%23c97a3d'/%3E%3C/svg%3E", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
